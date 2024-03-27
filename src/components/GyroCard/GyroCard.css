@@ -1,0 +1,10 @@
+.capsule {
+  height: max-content;
+  width: max-content;
+  perspective: 100px;
+  transform-style: preserve-3d;
+}
+
+.innerCapsule {
+  transition: transform 0.5s ease-in-out;
+}

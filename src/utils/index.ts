@@ -1,20 +1,21 @@
 import React from "react";
+import { GetElementPositions, TMouseState, TOnMouseMove } from "./utils.types";
 
-export function getCardCenter(card: HTMLDivElement) {
+export function getElementCenter(element: HTMLDivElement): GetElementPositions {
   //Kendi merkezi
-  const { top, left } = card.getBoundingClientRect();
+  const { top, left } = element.getBoundingClientRect();
 
   return {
-    CenterX: left + card.clientWidth / 2,
-    CenterY: top + card.clientHeight / 2,
-    LeftY: left + card.clientWidth / 3,
-    RightY: left + (card.clientWidth / 3) * 2,
-    TopX: top + card.clientHeight / 3,
-    BottomX: top + (card.clientHeight / 3) * 2,
+    CenterX: left + element.clientWidth / 2,
+    CenterY: top + element.clientHeight / 2,
+    LeftY: left + element.clientWidth / 3,
+    RightY: left + (element.clientWidth / 3) * 2,
+    TopX: top + element.clientHeight / 3,
+    BottomX: top + (element.clientHeight / 3) * 2,
   };
 }
 
-export function useMouseMove() {
+export function useMouseMove(): TOnMouseMove {
   const [mouseState, setMouseState] = React.useState({
     x: 0,
     y: 0,
@@ -31,20 +32,7 @@ export function useMouseMove() {
 card.getBoundingClientRect() = kartın width ve height değerlerini verir.
 */
 
-function getPosition(
-  cardCenter: {
-    CenterX: number;
-    CenterY: number;
-    LeftY: number;
-    RightY: number;
-    TopX: number;
-    BottomX: number;
-  },
-  mouseState: {
-    x: number;
-    y: number;
-  }
-) {
+function getPosition(cardCenter: GetElementPositions, mouseState: TMouseState) {
   let x, y;
 
   if (mouseState.x < cardCenter.LeftY) {
@@ -70,12 +58,17 @@ function getPosition(
 }
 
 export function calculateRotation(
-  mouseState: { x: number; y: number },
-  card: HTMLDivElement
+  mouseState: TMouseState,
+  card: HTMLDivElement,
+  strength?: number,
+  parentCenter?: GetElementPositions
 ): any {
   if (!card) return null;
+  //Eğer parentCenter varsa onu kullan yoksa kartın merkezini al
+  const { x, y } = getPosition(
+    parentCenter || getElementCenter(card),
+    mouseState
+  );
 
-  const { x, y } = getPosition(getCardCenter(card), mouseState);
-
-  return `rotate3d(${x},${y}, 0, 3deg)`;
+  return `rotate3d(${x},${y}, 0, ${strength || 12}deg)`;
 }

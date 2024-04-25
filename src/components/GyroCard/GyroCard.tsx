@@ -1,14 +1,22 @@
-import React, { FC, useEffect } from "react";
+import React, { forwardRef, useEffect } from "react";
 import "./GyroCard.css";
 import { calculateRotation, useMouseMove } from "../../utils/index";
-import { GyroCardProps } from "./GyroCard.types";
+import { EPerspective, GyroCardProps } from "./GyroCard.types";
 
-function GyroCard({ children }: GyroCardProps) {
-  const capsuleRef = React.useRef<HTMLDivElement | any>(null);
+function GyroCard({
+  children,
+  strength,
+  classNames,
+  duration,
+  easing,
+  perspective,
+  parentCenter,
+}: GyroCardProps): React.JSX.Element {
+  const cardRef = React.useRef<HTMLDivElement | any>(null);
 
   const { mouseState, onMouseMove } = useMouseMove();
   useEffect(() => {
-    if (!capsuleRef.current) return;
+    if (!cardRef.current) return;
     window.addEventListener("mousemove", onMouseMove);
 
     return () => {
@@ -16,14 +24,26 @@ function GyroCard({ children }: GyroCardProps) {
     };
   }, [mouseState.x, mouseState.y]);
 
+  const providerStyle = {
+    perspective: perspective ? EPerspective[perspective] : "1000px",
+  };
+
+  const innerCapsuleStyle = {
+    transform: calculateRotation(
+      mouseState,
+      cardRef.current,
+      strength,
+      parentCenter
+    ),
+    transition: `transform ${duration || 0.5}s ${easing || "ease-in-out"}`,
+  };
+
   return (
-    <div className={"capsule"}>
+    <div className={"gyroProvider"} style={providerStyle}>
       <div
-        ref={capsuleRef}
-        style={{
-          transform: calculateRotation(mouseState, capsuleRef.current),
-        }}
-        className={"innerCapsule"}
+        ref={cardRef}
+        style={innerCapsuleStyle}
+        className={`innerCapsule ${classNames || classNames}`}
       >
         {children}
       </div>

@@ -10,6 +10,8 @@ To install the library, use the following command:
 npm i react-gyro-card
 ```
 
+Live Demo: [Codesandbox](https://codesandbox.io/p/sandbox/react-gyro-card-rsln6f?file=%2Fsrc%2Findex.js)
+
 # Usage
 
 Here's how you can use the GyroCard component in your React application:
@@ -21,7 +23,7 @@ import GyroCard from "gyrocard";
 const App = () => {
   return (
     <div>
-      <GyroCard strength={10} perspective="high" classNames="my-gyro-card">
+      <GyroCard strength={10} classNames="my-gyro-card">
         <div>Your 3D content here</div>
       </GyroCard>
     </div>
@@ -40,7 +42,7 @@ export default App;
 | `classNames`  | `string`          | `undefined`     | Custom class names to apply to the GyroCard.                                        |
 | `duration`    | `number`          | `0.5`           | Duration of the transition effect in seconds.                                       |
 | `easing`      | `string`          | `"ease-in-out"` | Easing function for the transition effect.                                          |
-| `perspective` | `EPerspective`    | `1000`          | Perspective value for the 3D effect. Accepts `high`, `default`, `low`, or `lowest`. |
+| `perspective` | `EPerspective`    | `default`       | Perspective value for the 3D effect. Accepts `high`, `default`, `low`, or `lowest`. |
 
 ---
 

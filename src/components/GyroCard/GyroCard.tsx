@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect } from "react";
-import "./GyroCard.css";
+
 import { calculateRotation, useMouseMove } from "../../utils/index";
 import { EPerspective, GyroCardProps } from "./GyroCard.types";
 
@@ -26,6 +26,7 @@ function GyroCard({
 
   const providerStyle = {
     perspective: perspective ? EPerspective[perspective] : "1000px",
+    transformStyle: "preserve-3d",
   };
 
   const innerCapsuleStyle = {
@@ -36,14 +37,15 @@ function GyroCard({
       parentCenter
     ),
     transition: `transform ${duration || 0.5}s ${easing || "ease-in-out"}`,
+    position: "relative",
   };
 
   return (
-    <div className={"gyroProvider"} style={providerStyle}>
+    <div style={providerStyle as React.CSSProperties}>
       <div
         ref={cardRef}
-        style={innerCapsuleStyle}
-        className={`innerCapsule ${classNames || classNames}`}
+        style={innerCapsuleStyle as React.CSSProperties}
+        className={`${classNames || classNames}`}
       >
         {children}
       </div>

@@ -12,13 +12,22 @@ export default [
     input: "src/index.ts",
     output: [
       {
+        dir: "dist",
+        format: "cjs",
+        sourcemap: true,
+      },
+      {
         file: packageJson.main,
         format: "esm",
         sourcemap: true,
       },
     ],
     plugins: [
-      typescript(),
+      typescript({
+        tsconfig: "./tsconfig.json",
+        declaration: true,
+        declarationDir: "dist/types",
+      }),
       peerDepsExternal(),
       resolve(),
       commonjs(),
